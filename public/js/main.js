@@ -5,7 +5,6 @@ var container = document.querySelector('#container');
 var nciblock = document.querySelector('.nciblock');
 var addOption = document.querySelector('#addOption');
 var isActive = false;
-var xhr = new XMLHttpRequest();
 var url = "/validation/api/code";
 
 btn.addEventListener("click", function() {
@@ -16,7 +15,7 @@ if(!isActive) {
         nciblock.removeChild(nciblock.firstChild);
     }
 }
-
+var xhr = new XMLHttpRequest();
 xhr.open("POST", url, true);
 xhr.setRequestHeader("Content-Type", "application/json");
 xhr.onreadystatechange = function () {
@@ -25,13 +24,13 @@ xhr.onreadystatechange = function () {
         let data = JSON.parse(xhr.responseText);        
         renderHTML(data);
        } catch(e) {
-           throw Error;
+           console.error(e);
        }
                 
     }
 };
 var data = JSON.stringify({"code": field.value});
-xhr.send(data);
+xhr.send();
 
 
 });
