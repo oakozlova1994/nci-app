@@ -26,3 +26,5 @@ mongoose.connect(config.get('db'), {useNewUrlParser: true})
     //     "ORGCODE": "123Щ8288",
     //     "REFPOSITIONID": "6dfc8a04-9682-4a5c-beb0-d3e3ec510956",
     //     "": ""
+
+    // $env:nci_db="mongodb://localhost:27017/ncivalidation"

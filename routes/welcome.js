@@ -5,6 +5,8 @@ const Nci = require('../models/ncivalidation');
 const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
+const Joi = require('joi');
+
 const router = express.Router();
 
 // --------------------------DEFINE STORAGE----------
@@ -30,20 +32,24 @@ router.get('/', async (req, res) => {  // GET: /validation/api/
 //     res.sendFile(path.join(__dirname, '../client', 'index.html'));
 // }); 
 
-router.get('/:code', async (req, res) => {    
+router.get('/:code', async (req, res) => {   
+   const schema = { code: Joi.string().min(5).max(10).required()};
+
+   const valid = Joi.validate(req.params, schema);
+        if (valid.error) return res.status(400).send(valid.error.details[0].message);
+
    const result = await Nci.find({orgcode: req.params.code});
    res.send(result);
-    
 });
 
-router.post('/codes', async (req, res) => {
-    let search = req.body.codes; 
-    let result = {};  
-    for (let code in search) {  
-        code = search[code].code;         
-        result[code] = (await Nci.find({orgcode: code})); 
-    }
-    res.send(result);
+// router.post('/codes', async (req, res) => {
+//     let search = req.body.codes; 
+//     let result = {};  
+//     for (let code in search) {  
+//         code = search[code].code;         
+//         result[code] = (await Nci.find({orgcode: code})); 
+//     }
+//     res.send(result);
     
     // {
     //     "codes": [
@@ -52,7 +58,7 @@ router.post('/codes', async (req, res) => {
     //         {"code": "452Н2143"}]
             
     // }
-});
+// });
 
 router.post('/', async (req, res) => {  // POST: /validation/api/
 
