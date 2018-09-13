@@ -31,7 +31,7 @@ router.get('/', async (req, res) => {  // GET: /validation/api/
 //     res.sendFile(path.join(__dirname, '../client', 'index.html'));
 // }); 
 
-router.post('/:code', async (req, res) => { 
+router.post('/code', async (req, res) => { 
    const result = await Nci.find({orgcode: req.body.code});
    res.send(result);
 });
@@ -57,7 +57,7 @@ router.post('/:code', async (req, res) => {
 router.post('/', async (req, res) => {  // POST: /validation/api/
 
     upload(req, res, (err) => {  
-        res.send('test');
+        res.redirect('back');
     });
     
     fs.readFile(path.join(__dirname, '../upload', 'filename.csv'), { encoding : 'utf8'}, (err, data) => { 
