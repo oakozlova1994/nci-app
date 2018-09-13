@@ -37,7 +37,7 @@ xhr.send();
 
 function renderHTML(data) {
     let obj = {}      
-    if (data[0].message === '')     
+    if (data[0].message === '' || undefined)     
         return nciblock.insertAdjacentHTML("beforeend", "Запись не найдена!");
         
     for (let i=0; i < data.length; i++ ) {        
