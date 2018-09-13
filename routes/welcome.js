@@ -5,7 +5,6 @@ const Nci = require('../models/ncivalidation');
 const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
-const Joi = require('joi');
 
 const router = express.Router();
 
@@ -32,13 +31,8 @@ router.get('/', async (req, res) => {  // GET: /validation/api/
 //     res.sendFile(path.join(__dirname, '../client', 'index.html'));
 // }); 
 
-router.get('/:code', async (req, res) => {   
-   const schema = { code: Joi.string().min(5).max(10).required()};
-
-   const valid = Joi.validate(req.params, schema);
-        if (valid.error) return res.status(400).send(valid.error.details[0].message);
-
-   const result = await Nci.find({orgcode: req.params.code});
+router.post('/:code', async (req, res) => { 
+   const result = await Nci.find({orgcode: req.body.code});
    res.send(result);
 });
 
