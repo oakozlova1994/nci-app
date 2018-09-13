@@ -11,8 +11,7 @@ const router = express.Router();
 // --------------------------DEFINE STORAGE----------
 const storage = multer.diskStorage({
     destination: './upload/',
-    filename: function(req, file, cb) {
-        //cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    filename: function(req, file, cb) {        
         cb(null, file.fieldname +''+ path.extname(file.originalname));
     }
 });
@@ -27,34 +26,14 @@ router.get('/', async (req, res) => {  // GET: /validation/api/
     res.sendFile(path.join(__dirname, '../upload', 'upload.html'));
 }); 
 
-// router.get('/search', async (req, res) => {    // GET: /validation/api/search
-//     res.sendFile(path.join(__dirname, '../client', 'index.html'));
-// }); 
 
 router.post('/code', async (req, res) => { 
    const result = await Nci.find({orgcode: req.body.code});
-   res.send(result);
+   res.status(200).send(result);
 });
 
-// router.post('/codes', async (req, res) => {
-//     let search = req.body.codes; 
-//     let result = {};  
-//     for (let code in search) {  
-//         code = search[code].code;         
-//         result[code] = (await Nci.find({orgcode: code})); 
-//     }
-//     res.send(result);
-    
-    // {
-    //     "codes": [
-    //         {"code": "123Щ8288"},
-    //         {"code": "25202243"},
-    //         {"code": "452Н2143"}]
-            
-    // }
-// });
 
-router.post('/', async (req, res) => {  // POST: /validation/api/
+router.post('/secure/test', async (req, res) => {  // POST: /validation/api/
 
     upload(req, res, (err) => {  
         res.redirect('back');
