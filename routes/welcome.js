@@ -22,7 +22,7 @@ const upload = multer({
 
 // --------------------------
 
-router.get('/', async (req, res) => {  // GET: /validation/api/
+router.get('/secure/update/:id', async (req, res) => {  // GET: /validation/api/
     res.sendFile(path.join(__dirname, '../upload', 'upload.html'));
 }); 
 
@@ -36,7 +36,7 @@ router.post('/code', async (req, res) => {
 router.post('/secure/test', async (req, res) => {  // POST: /validation/api/
 
     upload(req, res, (err) => {  
-        res.redirect('back');
+        res.redirect('/');
     });
     
     fs.readFile(path.join(__dirname, '../upload', 'filename.csv'), { encoding : 'utf8'}, (err, data) => { 
