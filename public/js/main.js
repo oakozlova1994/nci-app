@@ -5,41 +5,40 @@ var container = document.querySelector('#container');
 var nciblock = document.querySelector('.nciblock');
 var addOption = document.querySelector('#addOption');
 var isActive = false;
-var url = "/validation/api/code";
+var murl = "/validation/api/code";
+var reg = new RegExp("^[0-9]{2,8}(.*)?[0-9]$");
 
-btn.addEventListener("click", function() {
-addOption.onchange = () => (addOption.checked) ? isActive = true : isActive = false; 
+btn.addEventListener('click', ajaxCall, true);
 
-if(!isActive) {
-    while (nciblock.hasChildNodes()) {
-        nciblock.removeChild(nciblock.firstChild);
-    }
-}
-var xhr = new XMLHttpRequest();
-xhr.open("POST", url, true);
-xhr.setRequestHeader("Content-Type", "application/json");
-xhr.onreadystatechange = function () {
-    if (xhr.readyState === 4 && xhr.status === 200) {
-       try{
-        let data = JSON.parse(xhr.responseText);        
-        renderHTML(data);
-       } catch(e) {
-           console.error(e);
-       }
+function ajaxCall() {    
+        addOption.onchange = () => (addOption.checked) ? isActive = true : isActive = false; 
+        
+        if(!isActive) {
+            while (nciblock.hasChildNodes()) {
+                nciblock.removeChild(nciblock.firstChild);
+            }
+        }
+        if (reg.test(field.value) == false || field.value.length <= 4) {return nciblock.insertAdjacentHTML("beforeend","<strong>there is no more donuts here :)</strong>");}
+        
+        var data = { "code": field.value };        
+        $.ajax({
+            url: murl,
+            type: "POST",
+            data: JSON.stringify(data),
+            contentType: "application/json",            
+        }).done(function(data){
+            if (data.length === 0)     
+                return nciblock.insertAdjacentHTML("beforeend", "Запись не найдена!");     
+            renderHTML(data);
+          });
                 
-    }
-};
-var data = JSON.stringify({"code": field.value});
-xhr.send();
+        }
 
-
-});
 
 function renderHTML(data) {
-    let obj = {}      
-    if (data[0].message === '' || undefined)     
-        return nciblock.insertAdjacentHTML("beforeend", "Запись не найдена!");
-        
+    let obj = {}    
+    if (data === null || data === undefined)     
+            return nciblock.insertAdjacentHTML("beforeend", "Запись не найдена!");     
     for (let i=0; i < data.length; i++ ) {        
         obj = data[i]; 
         
