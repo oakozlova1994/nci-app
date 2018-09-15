@@ -5,7 +5,7 @@ var container = document.querySelector('#container');
 var nciblock = document.querySelector('.nciblock');
 var addOption = document.querySelector('#addOption');
 var isActive = false;
-var murl = "/validation/api/code";
+var murl = "/api/validations/code";
 var reg = new RegExp("^[0-9]{2,8}(.*)?[0-9]$");
 
 btn.addEventListener('click', ajaxCall, true);

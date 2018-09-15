@@ -1,9 +1,21 @@
 const express = require('express');
 const welcome = require('./routes/welcome');
+const users = require('./routes/users');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-
+const mongoose = require('mongoose');
+const config = require('config');
+const auth = require('./routes/auth');
 const app = express();
+
+if (!config.get('jwt')) {
+    console.error('FATAL ERROR: jwt is no defined');
+    process.exit(1);
+}
+
+mongoose.connect(config.get('db'), {useNewUrlParser: true})
+    .then(() => console.log('mongoDB connection successful'))
+    .catch((ex) => console.log(`error: ${ex}`));
 
 require('./startup/prod')(app);
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -23,7 +35,9 @@ app.use(morgan('dev'));
 //     next();    
 // });
 
-app.use('/validation/api', welcome);
+app.use('/api/validations', welcome);
+app.use('/api/users', users);
+app.use('/api/auth', auth);
 
 // Handling all Errors in Application
 app.use((req, res, next) => {

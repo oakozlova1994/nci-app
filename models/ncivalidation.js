@@ -1,9 +1,4 @@
 const mongoose = require('mongoose');
-const config = require('config');
-
-mongoose.connect(config.get('db'), {useNewUrlParser: true})
-    .then(() => console.log('mongoDB connection successful'))
-    .catch((ex) => console.log(`error: ${ex}`));
 
     const nciSchema = new mongoose.Schema({       
         name: { type: String, default: ''},        

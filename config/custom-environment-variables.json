@@ -1,3 +1,4 @@
 {
-    "db": "nci_db"
+    "db": "nci_db",
+    "jwt": "jwtPrivateKey"
 }

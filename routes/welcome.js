@@ -1,5 +1,7 @@
 const express = require('express');
+const admin = require('../middleware/admin');
 const Papa = require('papaparse');
+const auth = require('../middleware/auth');
 const moment = require('moment');
 const Nci = require('../models/ncivalidation');
 const fs = require('fs');
@@ -22,18 +24,18 @@ const upload = multer({
 
 // --------------------------
 
-router.get('/secure/update/:id', async (req, res) => {  // GET: /validation/api/
+router.get('/update', auth, async (req, res) => {  // GET: /api/validations/update
     res.sendFile(path.join(__dirname, '../upload', 'upload.html'));
 }); 
 
 
-router.post('/code', async (req, res) => { 
+router.post('/code', async (req, res) => { // /api/validations/code
    const result = await Nci.find({orgcode: req.body.code});
    res.status(200).send(result);
 });
 
 
-router.post('/secure/test', async (req, res) => {  // POST: /validation/api/
+router.post('/upload', [auth, admin], async (req, res) => {  // POST: /api/validations/upload
 
     upload(req, res, (err) => {  
         res.redirect('/');
