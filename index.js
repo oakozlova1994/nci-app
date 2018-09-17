@@ -8,10 +8,10 @@ const config = require('config');
 const auth = require('./routes/auth');
 const app = express();
 
-if (!config.get('jwt')) {
-    console.error('FATAL ERROR: jwt is no defined');
-    process.exit(1);
-}
+// if (!config.get('jwt')) {
+//     console.error('FATAL ERROR: jwt is no defined');
+//     process.exit(1);
+// }
 
 mongoose.connect(config.get('db'), {useNewUrlParser: true})
     .then(() => console.log('mongoDB connection successful'))

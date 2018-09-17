@@ -24,7 +24,7 @@ const upload = multer({
 
 // --------------------------
 
-router.get('/update', auth, async (req, res) => {  // GET: /api/validations/update
+router.get('/update', async (req, res) => {  // GET: /api/validations/update
     res.sendFile(path.join(__dirname, '../upload', 'upload.html'));
 }); 
 
@@ -35,7 +35,7 @@ router.post('/code', async (req, res) => { // /api/validations/code
 });
 
 
-router.post('/upload', [auth, admin], async (req, res) => {  // POST: /api/validations/upload
+router.post('/upload', async (req, res) => {  // POST: /api/validations/upload
 
     upload(req, res, (err) => {  
         res.redirect('/');
