@@ -21,10 +21,7 @@ require('./startup/prod')(app);
 
 // app.set('view engine', 'ejs');
 // app.use('/public', express.static('public'));
-app.use(express.static(__dirname + "/public"));
-app.get('/', function(req, res) {
-    res.render('index');
-})
+
 
 //if(process.env.NODE_ENV === 'production') {
     // app.use(express.static('client/dist/client'));
