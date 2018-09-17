@@ -24,31 +24,34 @@ const upload = multer({
 
 // --------------------------
 
-router.get('/update', async (req, res) => {  // GET: /api/validations/update
+router.get('/update', async (req, res) => {  // GET: /api/validations/update    
     res.sendFile(path.join(__dirname, '../upload', 'upload.html'));
 }); 
 
 
-router.post('/code', async (req, res) => { // /api/validations/code
-   const result = await Nci.find({orgcode: req.body.code});
-   res.status(200).send(result);
+router.post('/code', async (req, res) => { // /api/validations/code        
+   const result = await Nci.find({orgcode: req.body.code});   
+    let messages = result.filter(function(item) {
+        return item.message !== '';
+    });     
+   
+   res.status(200).send(messages);
 });
 
 
-router.post('/upload', async (req, res) => {  // POST: /api/validations/upload  
-
+router.post('/upload', async (req, res) => {  // POST: /api/validations/upload     
     upload(req, res, (err) => {  
         res.redirect('/');
     });
 
     fs.readFile(path.join(__dirname, '../upload', 'filename.csv'), { encoding : 'utf8'}, (err, data) => { 
-        if (err) console.error(err);
-
+        if (err) console.error("read file: " + err);
        Papa.parse(data, {
             header: true,
             worker: true,        
             complete: function(results) {
                 data = results.data;
+                console.log("Parse data: " + data);
             }
         }); // Papa
         
@@ -59,20 +62,23 @@ router.post('/upload', async (req, res) => {  // POST: /api/validations/upload
 
 // --------------FUNCTIONS-------------------------------------------
        
-async function saveToDatabase(data) {          
+async function saveToDatabase(data) { 
+    for (let i=0; i < data.length; i++) {
+        try{         
         const nci = new Nci({
-            name: data.BATCHRECEIVER,        
-            date: moment(data.BATCHDATE, 'DD.MM.YYYY h:mm:ss').format(),   // BATCHDATE": "30.08.2018 0:13:58",
-            message: data.MSG_NAME,
-            description: data.DESCRIPTION,
-            orgcode: data.ORGCODE
+            name: data[i].BATCHRECEIVER,        
+            date: moment(data[i].BATCHDATE, 'DD.MM.YYYY h:mm:ss').format(),   // BATCHDATE": "30.08.2018 0:13:58",
+            message: data[i].MSG_NAME,
+            description: data[i].DESCRIPTION,
+            orgcode: data[i].ORGCODE
         });
-        try{
+        
             const result = await nci.save();
-        }
-        catch (e) {console.error(e.message);}
+        } catch (ex) {console.error("Saving errors: " + ex);}
+        
         
         // console.log("saveToDatabase" + result);
+}
 }
 
 async function selectAndUpdate(data) {    
