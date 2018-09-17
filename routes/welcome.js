@@ -23,6 +23,9 @@ const upload = multer({
 }).single('filename');
 
 // --------------------------
+router.get('/', function (req, res) {
+    res.render(__dirname + '../public/index', {});
+  });
 
 router.get('/update', async (req, res) => {  // GET: /api/validations/update    
     res.sendFile(path.join(__dirname, '../upload', 'upload.html'));
