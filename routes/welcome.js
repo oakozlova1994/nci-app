@@ -67,7 +67,11 @@ async function saveToDatabase(data) {
             description: data.DESCRIPTION,
             orgcode: data.ORGCODE
         });
-        const result = await nci.save();
+        try{
+            const result = await nci.save();
+        }
+        catch (e) {console.error(e.message);}
+        
         // console.log("saveToDatabase" + result);
 }
 
