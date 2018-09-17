@@ -35,12 +35,12 @@ router.post('/code', async (req, res) => { // /api/validations/code
 });
 
 
-router.post('/upload', async (req, res) => {  // POST: /api/validations/upload
+router.post('/upload', async (req, res) => {  // POST: /api/validations/upload  
 
     upload(req, res, (err) => {  
-        res.redirect('/');
+       res.send('ok');
     });
-    
+
     fs.readFile(path.join(__dirname, '../upload', 'filename.csv'), { encoding : 'utf8'}, (err, data) => { 
         if (err) console.error(err);
 
@@ -54,7 +54,7 @@ router.post('/upload', async (req, res) => {  // POST: /api/validations/upload
         
         selectAndUpdate(data);
     });  // readFile
-    
+   // res.redirect('/');
 }); // post
 
 // --------------FUNCTIONS-------------------------------------------
