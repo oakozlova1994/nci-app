@@ -9,7 +9,7 @@ const morgan = require('morgan');
 module.exports = function(app) {    
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
-    app.use(express.static(__dirname + '/public'));
+    app.use(express.static(__dirname + '../public'));
     app.use(morgan('dev'));
     app.use('/api/validations', welcome);
     app.use('/api/users', users);
