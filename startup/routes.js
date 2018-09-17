@@ -1,4 +1,3 @@
-const express = require('express');
 const auth = require('../routes/auth');
 const welcome = require('../routes/welcome');
 const users = require('../routes/users');
@@ -8,8 +7,7 @@ const morgan = require('morgan');
 
 module.exports = function(app) {    
     app.use(bodyParser.urlencoded({ extended: false }));
-    app.use(bodyParser.json());
-    app.use(express.static(__dirname + '../public'));
+    app.use(bodyParser.json());    
     app.use(morgan('dev'));
     app.use('/api/validations', welcome);
     app.use('/api/users', users);

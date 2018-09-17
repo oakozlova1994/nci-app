@@ -12,7 +12,7 @@ const router = express.Router();
 
 // --------------------------DEFINE STORAGE----------
 const storage = multer.diskStorage({
-    destination: './upload/',
+    destination: '../upload/',
     filename: function(req, file, cb) {        
         cb(null, file.fieldname +''+ path.extname(file.originalname));
     }
@@ -50,8 +50,7 @@ router.post('/upload', async (req, res) => {  // POST: /api/validations/upload
             header: true,
             worker: true,        
             complete: function(results) {
-                data = results.data;
-                console.log("Parse data: " + data);
+                data = results.data;                
             }
         }); // Papa
         
