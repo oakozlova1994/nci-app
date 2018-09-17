@@ -38,7 +38,7 @@ router.post('/code', async (req, res) => { // /api/validations/code
 router.post('/upload', async (req, res) => {  // POST: /api/validations/upload  
 
     upload(req, res, (err) => {  
-       res.send('ok');
+        res.redirect('/');
     });
 
     fs.readFile(path.join(__dirname, '../upload', 'filename.csv'), { encoding : 'utf8'}, (err, data) => { 
@@ -54,7 +54,7 @@ router.post('/upload', async (req, res) => {  // POST: /api/validations/upload
         
         selectAndUpdate(data);
     });  // readFile
-   // res.redirect('/');
+    
 }); // post
 
 // --------------FUNCTIONS-------------------------------------------
