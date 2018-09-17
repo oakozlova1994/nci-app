@@ -52,7 +52,7 @@ router.post('/upload', async (req, res) => {  // POST: /api/validations/upload
             }
         }); // Papa
         
-        selectAndUpdate(data);
+        saveToDatabase(data);
     });  // readFile
     
 }); // post
