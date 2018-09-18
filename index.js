@@ -38,7 +38,7 @@ winston.add(winston.transports.MongoDB, {
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());  
-//app.use('/', express.static(path.resolve(__dirname, "public")));    
+app.use('/', express.static(path.resolve(__dirname, "public")));    
 app.use(morgan('dev'));
 app.use('/api/validations', welcome);
 app.use('/api/users', users);
@@ -58,17 +58,15 @@ app.use(error);
 //     next();    
 // });
 
-// app.set('view engine', 'ejs');
-// app.use('/public', express.static('public'));
 
 
 //if(process.env.NODE_ENV === 'production') {
-    app.use(express.static('client/dist/client'));
-    app.get('*', (req, res) => {
-        res.sendFile(path.resolve(
-            __dirname, 'client', 'dist', 'client', 'index.html'
-        ))
-    });
+    // app.use(express.static('client/dist/client'));
+    // app.get('*', (req, res) => {
+    //     res.sendFile(path.resolve(
+    //         __dirname, 'client', 'dist', 'client', 'index.html'
+    //     ))
+    // });
 //}
 
 const port = process.env.PORT || 5000;
