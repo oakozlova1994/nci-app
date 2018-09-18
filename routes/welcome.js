@@ -12,7 +12,7 @@ const router = express.Router();
 
 // --------------------------DEFINE STORAGE----------
 const storage = multer.diskStorage({
-    destination: '../upload/',
+    destination: './upload/',
     filename: function(req, file, cb) {        
         cb(null, file.fieldname +''+ path.extname(file.originalname));
     }
@@ -25,7 +25,7 @@ const upload = multer({
 // --------------------------
 
 router.get('/update', async (req, res) => {  // GET: /api/validations/update    
-    res.sendFile(path.join(__dirname, '../upload', 'upload.html'));
+    res.sendFile(path.join(__dirname, './upload', 'upload.html'));
 }); 
 
 
@@ -44,7 +44,7 @@ router.post('/upload', async (req, res) => {  // POST: /api/validations/upload
         res.redirect('/');
     });
 
-    fs.readFile(path.join(__dirname, '../upload', 'filename.csv'), { encoding : 'utf8'}, (err, data) => { 
+    fs.readFile(path.join(__dirname, './upload', 'filename.csv'), { encoding : 'utf8'}, (err, data) => { 
         if (err) console.error("read file: " + err);
        Papa.parse(data, {
             header: true,
