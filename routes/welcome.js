@@ -12,7 +12,7 @@ const router = express.Router();
 
 // --------------------------DEFINE STORAGE----------
 const storage = multer.diskStorage({
-    destination: './upload/',
+    destination: '../upload/',
     filename: function(req, file, cb) {        
         cb(null, file.fieldname +''+ path.extname(file.originalname));
     }
@@ -72,7 +72,7 @@ async function saveToDatabase(data) {
             orgcode: data[i].ORGCODE
         });
         
-            const result = await nci.save();
+            await nci.save();
         } catch (ex) {console.error("Saving errors: " + ex);}
         
         
