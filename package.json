@@ -5,10 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index",
-    "server": "nodemon index",
-    "client-install": "npm install --prefix client",
-    "client-server": "npm run start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client-server\" "    
+    "server": "nodemon index"      
   },
   "engines": {
     "node": "10.9.0"

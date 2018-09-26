@@ -15,9 +15,9 @@ require('express-async-errors');
 require('winston-mongodb');
 
 // -----------------------------------JWT -------------------------
-if (!config.get('jwt')) {
-    throw new Error('FATAL ERROR: jwt is no defined');            
-}
+// if (!config.get('jwt')) {
+//     throw new Error('FATAL ERROR: jwt is no defined');            
+// }
 // ------------------------------ MONGO --------------------------------------------
 mongoose.connect(config.get('db'), {useNewUrlParser: true})
 .then(() => winston.info('Connected to MongoDB...'));
