@@ -1,4 +1,4 @@
-const express = require('express');
+const router = require('express').Router();
 const admin = require('../middleware/admin');
 const Papa = require('papaparse');
 const auth = require('../middleware/auth');
@@ -7,24 +7,20 @@ const Nci = require('../models/ncivalidation');
 const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
+const multerConf = {
+    storage: multer.diskStorage({
+        destination: function(req, file, next) {
+            next(null, './upload');
+        },
+        filename: function(req, file, next) {
+            next(null, file.fieldname + path.extname(file.originalname));
+        }
+    })
+};
 
-const router = express.Router();
-
-// --------------------------DEFINE STORAGE----------
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, './upload/')},
-    filename: function(req, file, cb) {        
-        cb(null, file.fieldname +''+ path.extname(file.originalname));
-    }
-});
-
-const upload = multer({storage: storage}).single('filename');
-
-// --------------------------
 
 router.get('/update', async (req, res) => {  // GET: /api/validations/update    
-    res.sendFile(path.join(__dirname, './upload', 'upload.html'));
+    res.sendFile(path.join(__dirname, '../upload/','upload.html'));
 }); 
 
 
@@ -38,17 +34,9 @@ router.post('/code', async (req, res) => { // /api/validations/code
 });
 
 
-router.post('/upload', async (req, res) => {  // POST: /api/validations/upload     
-    upload(req, res, (err) => {
-        if (err) {
-             return res.end("Error uploading file.")
-        } else {
-            res.redirect('/');
-        }  
-    
-});
-    
-    fs.readFile(path.join(__dirname, './upload', 'filename.csv'), { encoding : 'utf8'}, (err, data) => { 
+router.post('/upload', multer(multerConf).single('filename'), async (req, res) => {  // POST: /api/validations/upload     
+         
+    fs.readFile(path.join(__dirname, '../upload/', 'filename.csv'), { encoding : 'utf8'}, (err, data) => { 
         if (err) console.error("read file: " + err);
        Papa.parse(data, {
             header: true,
@@ -60,7 +48,7 @@ router.post('/upload', async (req, res) => {  // POST: /api/validations/upload
         
         selectAndUpdate(data);
     });  // readFile
-    
+    res.redirect('/');
 }); // post
 
 // --------------FUNCTIONS-------------------------------------------
@@ -81,8 +69,7 @@ async function saveToDatabase(data) {
 
 async function selectAndUpdate(data) {    
         for (let i=0; i < data.length; i++) {
-
-            if (data.message == '') continue; 
+            if (data[i].MSG_NAME == '') continue; 
 
             try{
             const docs = await Nci.findOneAndUpdate({name: data[i].BATCHRECEIVER, orgcode: data[i].ORGCODE}, {
