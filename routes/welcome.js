@@ -51,38 +51,40 @@ router.post('/upload', multer(multerConf).single('filename'), async (req, res) =
     res.redirect('/');
 }); // post
 
-// --------------FUNCTIONS-------------------------------------------
-       
+// --------------FUNCTIONS-------------------------------------------                                                    
 async function saveToDatabase(data) {     
         try{         
         const nci = new Nci({
-            name: data.BATCHRECEIVER,        
+            groupfrom: data.BATCHRECEIVER,  
+            //groupto: data.BATCHSENDER,      
             date: moment(data.BATCHDATE, 'DD.MM.YYYY h:mm:ss').format(),   // BATCHDATE": "30.08.2018 0:13:58",
             message: data.MSG_NAME,
             description: data.DESCRIPTION,
-            orgcode: data.ORGCODE
+            orgcode: data.ORGCODE,
+            guid: data.REFPOSITIONID
         });
         
             await nci.save();
         } catch (ex) {console.error("Saving errors: " + ex);}        
 }
-
+  // 
 async function selectAndUpdate(data) {    
         for (let i=0; i < data.length; i++) {
-            if (data[i].MSG_NAME == '') continue; 
-
-            try{
-            const docs = await Nci.findOneAndUpdate({name: data[i].BATCHRECEIVER, orgcode: data[i].ORGCODE}, {
+            if (data[i].ORGCODE == '' && data[i].REFPOSITIONID == '' || data[i].MSG_NAME == '') continue;            
+            try{   
+            const docs = await Nci.findOneAndUpdate( { $and: [{ orgcode: {$eq: data[i].ORGCODE}, groupfrom: {$eq: data[i].BATCHRECEIVER}}]}, {
                 $set: {
-                    name: data[i].BATCHRECEIVER,
+                    groupfrom: data[i].BATCHRECEIVER,
+                    //groupto: data[i].BATCHSENDER,
                     date: moment(data[i].BATCHDATE, 'DD.MM.YYYY h:mm:ss').format(), // Error
                     message: data[i].MSG_NAME,
                     description: data[i].DESCRIPTION,
-                    orgcode: data[i].ORGCODE
+                    orgcode: data[i].ORGCODE,
+                    guid: data[i].REFPOSITIONID
                 }
             }, {new: true});
 
-            if (docs === null) 
+            if (docs === null)                  
                 saveToDatabase(data[i]); 
                 
         } catch (ex) {console.error(ex);}

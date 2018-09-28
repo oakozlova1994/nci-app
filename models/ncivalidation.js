@@ -1,11 +1,13 @@
 const mongoose = require('mongoose');
 
     const nciSchema = new mongoose.Schema({       
-        name: { type: String, default: ''},        
+        groupfrom: { type: String, default: ''},
+        groupto: {type: String},   // BATCHSENDER     
         date: {type: Date, default: Date.now},   
         message:{ type: String, default: ''},
         description: { type: String, default: ''},
-        orgcode: { type: String, default: ''}
+        orgcode: { type: String, default: ''},
+        guid: {type: String, default: ''}
     });
 
     module.exports = mongoose.model('Nci', nciSchema);

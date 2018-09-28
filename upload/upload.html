@@ -4,15 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" /> 
     <title>Test Upload</title>
 </head>
 <body>
-    <h1>Test Upload</h1>
-
-    <form action="/api/validations/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="filename">
-        <input type="submit" value="upload">
-    </form>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="mb-3 mt-5">Upload Mega File</h3>
+                <form action="/api/validations/upload" method="post" enctype="multipart/form-data"> 
+                    <div class="custom-file">
+                        <input type="file" name="filename" class="custom-file-input" id="customFile">
+                        <label class="custom-file-label" for="customFile">Choose file</label>
+                        <input class="btn btn-primary mt-2" type="submit" value="upload">
+                      </div>
+                </form>
+        </div>
+       
+    </div>
+</div> 
 
 </body>
 </html>

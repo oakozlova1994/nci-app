@@ -41,15 +41,17 @@ function renderHTML(data) {
             return nciblock.insertAdjacentHTML("beforeend", "Запись не найдена!");     
     for (let i=0; i < data.length; i++ ) {        
         obj = data[i]; 
+        let d1 = obj.date.substring(obj.date.indexOf('T'), 0) + " " + obj.date.substring(obj.date.indexOf('.'), 11);
         
         nciblock.insertAdjacentHTML("beforeend", 
         `<div class="card list-bottom">
             <div class="card-header orgcode">${obj.orgcode}</div>
         <ul class="list-group list-group-flush">   
-            <li class="list-group-item list-group-item-dark">${obj.name}</li>         
-            <li class="list-group-item list-group-item-danger">${obj.message}</li>
-            <li class="list-group-item list-group-item-dark">${obj.description}</li>
-            <li class="list-group-item list-group-item-danger">${obj.date.substring(obj.date.indexOf('T'), 0)}</li>
+            <li class="list-group-item light">${obj.groupfrom}</li>                     
+            <li class="list-group-item warning">${obj.message}</li>
+            <li class="list-group-item light">${obj.description}</li>
+            <li class="list-group-item warning">${obj.guid}</li> 
+            <li class="list-group-item light">${d1}</li>
         </ul>
         </div>`
         );
