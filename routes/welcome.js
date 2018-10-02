@@ -40,8 +40,11 @@ router.post('/upload', multer(multerConf).single('filename'), async (req, res) =
         if (err) console.error("read file: " + err);
        Papa.parse(data, {
             header: true,
-            worker: true,        
+            delimiter: "",	
+	        trimHeaders: true,
+           // worker: true,  
             complete: function(results) {
+                console.log(results.data);
                 data = results.data;                
             }
         }); // Papa
@@ -55,8 +58,7 @@ router.post('/upload', multer(multerConf).single('filename'), async (req, res) =
 async function saveToDatabase(data) {     
         try{         
         const nci = new Nci({
-            groupfrom: data.BATCHRECEIVER,  
-            //groupto: data.BATCHSENDER,      
+            groupfrom: data.BATCHSENDER,                
             date: moment(data.BATCHDATE, 'DD.MM.YYYY h:mm:ss').format(),   // BATCHDATE": "30.08.2018 0:13:58",
             message: data.MSG_NAME,
             description: data.DESCRIPTION,
@@ -68,14 +70,13 @@ async function saveToDatabase(data) {
         } catch (ex) {console.error("Saving errors: " + ex);}        
 }
   // 
-async function selectAndUpdate(data) {    
-        for (let i=0; i < data.length; i++) {
+async function selectAndUpdate(data) { 
+        for (let i=0; i < data.length; i++) {                                 
             if (data[i].ORGCODE == '' && data[i].REFPOSITIONID == '' || data[i].MSG_NAME == '') continue;            
             try{   
-            const docs = await Nci.findOneAndUpdate( { $and: [{ orgcode: {$eq: data[i].ORGCODE}, groupfrom: {$eq: data[i].BATCHRECEIVER}}]}, {
+            const docs = await Nci.findOneAndUpdate( { $and: [{ orgcode: {$eq: data[i].ORGCODE}, groupfrom: {$eq: data[i].BATCHSENDER}}]}, {
                 $set: {
-                    groupfrom: data[i].BATCHRECEIVER,
-                    //groupto: data[i].BATCHSENDER,
+                    groupfrom: data[i].BATCHSENDER,                    
                     date: moment(data[i].BATCHDATE, 'DD.MM.YYYY h:mm:ss').format(), // Error
                     message: data[i].MSG_NAME,
                     description: data[i].DESCRIPTION,
@@ -93,3 +94,5 @@ async function selectAndUpdate(data) {
             }
 
 module.exports = router;
+
+// 220I1106

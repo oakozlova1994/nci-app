@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
 
     const nciSchema = new mongoose.Schema({       
-        groupfrom: { type: String, default: ''},
-        groupto: {type: String},   // BATCHSENDER     
+        groupfrom: { type: String, default: ''},          
         date: {type: Date, default: Date.now},   
         message:{ type: String, default: ''},
         description: { type: String, default: ''},
@@ -12,8 +11,7 @@ const mongoose = require('mongoose');
 
     module.exports = mongoose.model('Nci', nciSchema);
 
-    // "BATCHSENDER": "НСИ",
-    //     "BATCHRECEIVER": "OSGMU",
+    
     //     "XID": "d6e8dcb4-0833-4cef-a25e-b96635db5b42",
     //     "BATCHDATE": "30.08.2018 0:13:58",
     //     "MSG_CODE": "E904",
